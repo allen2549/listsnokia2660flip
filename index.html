@@ -13,28 +13,38 @@
       align-items: center;
       height: 100vh;
       text-align: center;
+      background-color: #333; /* Cor de fundo no modo escuro */
+      color: #fff; /* Cor do texto no modo escuro */
+      transition: background-color 0.5s, color 0.5s; /* Adicionada transição suave */
+    }
+
+    body.dark-mode {
+      background-color: #333; /* Cor de fundo no modo escuro */
+      color: #fff; /* Cor do texto no modo escuro */
     }
 
     form {
       margin: 10px;
       display: flex;
-      flex-direction: column; /* Alterado para coluna (column) */
+      flex-direction: column;
       align-items: center;
     }
 
     input[type="text"] {
       width: 50%;
       box-sizing: border-box;
-      margin-bottom: 10px; /* Adicionado espaço entre o campo de texto e os botões */
+      margin-bottom: 10px;
       padding: 5px;
       font-size: 16px;
     }
 
     input[type="image"].adicionar,
-    input[type="image"].limpar {
-      width: 16px;
-      height: 16px;
-      margin: 0;
+    input[type="image"].limpar,
+    input[type="image"].toggle-dark-mode,
+    button.concluir {
+      width: 32px;
+      height: 32px;
+      margin: 0 5px;
       padding: 0;
       background: none;
       border: none;
@@ -51,6 +61,7 @@
       list-style-type: none;
       padding: 0;
       margin: 0;
+      text-align: left;
     }
 
     li {
@@ -58,30 +69,18 @@
       font-size: 16px;
       display: flex;
       align-items: center;
-    }
-
-    button.concluir img {
-      width: 16px;
-      height: 16px;
-      margin: 0;
-      padding: 0;
-    }
-
-    button.limpar img {
-      width: 16px;
-      height: 16px;
-      margin: 0;
-      padding: 0;
+      border: 1px solid #ccc;
+      padding: 5px;
+      border-radius: 5px;
     }
 
     .botoes {
       display: flex;
-      flex-direction: column;
       margin-top: 10px;
     }
 
     .botoes button {
-      margin-bottom: 10px;
+      margin-right: 5px;
     }
 
     @media screen and (max-width: 240px) {
@@ -100,10 +99,10 @@
 
     <form onsubmit="return adicionarItem()">
       <input type="text" id="valor" name="valor" placeholder="Digite" onkeydown="if(event.key==='Enter') return adicionarItem()">
-      <div class="botoes"> <!-- Adicionada uma div para agrupar os botões -->
+      <div class="botoes">
         <input type="image" class="adicionar" src="https://cdn-icons-png.flaticon.com/512/738/738882.png" alt="Adicionar">
         <input type="image" class="limpar" src="https://cdn-icons-png.flaticon.com/512/505/505445.png" alt="Limpar">
-      </div>
+        </div>
     </form>
 
     <ul id="lista"></ul>
@@ -128,6 +127,8 @@
         var imgConcluir = document.createElement("img");
         imgConcluir.src = "https://cdn-icons-png.flaticon.com/512/4646/4646135.png";
         imgConcluir.alt = "Concluir";
+        imgConcluir.width = 32;
+        imgConcluir.height = 32;
         concluirButton.appendChild(imgConcluir);
 
         novoItem.appendChild(concluirButton);
@@ -151,6 +152,11 @@
 
     function limpar() {
       location.reload();
+    }
+
+    // Adicionado script para alternar entre os modos claro e escuro
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
     }
   </script>
 </body>
