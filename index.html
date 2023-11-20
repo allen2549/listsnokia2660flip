@@ -13,14 +13,9 @@
       align-items: center;
       height: 100vh;
       text-align: center;
-      background-color: #333; /* Cor de fundo no modo escuro */
-      color: #fff; /* Cor do texto no modo escuro */
+      background-color: #fff; /* Cor de fundo no modo claro */
+      color: #333; /* Cor do texto no modo claro */
       transition: background-color 0.5s, color 0.5s; /* Adicionada transição suave */
-    }
-
-    body.dark-mode {
-      background-color: #333; /* Cor de fundo no modo escuro */
-      color: #fff; /* Cor do texto no modo escuro */
     }
 
     form {
@@ -42,8 +37,8 @@
     input[type="image"].limpar,
     input[type="image"].toggle-dark-mode,
     button.concluir {
-      width: 32px;
-      height: 32px;
+      width: 16px;
+      height: 16px;
       margin: 0 5px;
       padding: 0;
       background: none;
@@ -52,8 +47,8 @@
     }
 
     img.logo {
-      width: 32px;
-      height: 32px;
+      width: 16px;
+      height: 16px;
       margin-bottom: 10px;
     }
 
@@ -127,8 +122,8 @@
         var imgConcluir = document.createElement("img");
         imgConcluir.src = "https://cdn-icons-png.flaticon.com/512/4646/4646135.png";
         imgConcluir.alt = "Concluir";
-        imgConcluir.width = 32;
-        imgConcluir.height = 32;
+        imgConcluir.width = 16;
+        imgConcluir.height = 16;
         concluirButton.appendChild(imgConcluir);
 
         novoItem.appendChild(concluirButton);
