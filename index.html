@@ -24,11 +24,11 @@
     }
 
     input[type="text"] {
-      width: 5%; /* Diminuí a largura para 5% da largura da tela */
+      width: 100%;
       box-sizing: border-box;
       margin-bottom: 10px;
       padding: 5px;
-      font-size: 14px; /* Reduzi o tamanho da fonte */
+      font-size: 16px;
     }
 
     ul {
@@ -40,11 +40,52 @@
     li {
       margin-bottom: 5px;
       font-size: 16px;
+      display: flex;
+      align-items: center;
     }
 
     button {
       font-size: 16px;
       padding: 5px;
+      width: 16px;
+      height: 16px;
+      margin-right: 5px; /* Espaço entre o botão e o texto da tarefa */
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* Estilo para redimensionar a imagem do botão Adicionar */
+    input[type="image"].adicionar {
+      width: 16px;
+      height: 16px;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Estilo para redimensionar a imagem do botão Concluir */
+    button.concluir img {
+      width: 16px;
+      height: 16px;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Estilo para redimensionar a imagem do botão Limpar */
+    button.limpar img {
+      width: 16px;
+      height: 16px;
+      margin: 0;
+      padding: 0;
+    }
+
+    @media screen and (max-width: 240px) {
+      input[type="text"] {
+        font-size: 14px;
+      }
+      li, button {
+        font-size: 14px;
+      }
     }
   </style>
 </head>
@@ -54,12 +95,16 @@
   <form onsubmit="return adicionarItem()">
     <label for="valor">Tarefa:</label>
     <input type="text" id="valor" name="valor" onkeydown="if(event.key==='Enter') return adicionarItem()">
-    <input type="submit" value="Adicionar">
+    <!-- Substituído o texto do botão por uma imagem -->
+    <input type="image" class="adicionar" src="https://cdn-icons-png.flaticon.com/512/738/738882.png" alt="Adicionar">
   </form>
 
   <ul id="lista"></ul>
 
-  <button type="button" onclick="limpar()">Limpar</button>
+  <button type="button" class="limpar" onclick="limpar()">
+    <!-- Substituído o texto do botão por uma imagem -->
+    <img src="https://cdn-icons-png.flaticon.com/512/505/505445.png" alt="Limpar">
+  </button>
 
   <script>
     var contador = 1;
@@ -70,15 +115,23 @@
         var lista = document.getElementById("lista");
         var novoItem = document.createElement("li");
         novoItem.id = "item" + contador;
-        novoItem.appendChild(document.createTextNode(valorInput));
 
         var concluirButton = document.createElement("button");
-        concluirButton.appendChild(document.createTextNode("Concluir"));
+        concluirButton.className = "concluir";
         concluirButton.onclick = function() {
           concluirItem(novoItem.id);
         };
 
+        // Substituído o texto do botão por uma imagem
+        var imgConcluir = document.createElement("img");
+        imgConcluir.src = "https://cdn-icons-png.flaticon.com/512/4646/4646135.png";
+        imgConcluir.alt = "Concluir";
+        concluirButton.appendChild(imgConcluir);
+
         novoItem.appendChild(concluirButton);
+
+        novoItem.appendChild(document.createTextNode(valorInput));
+
         lista.appendChild(novoItem);
 
         document.getElementById("valor").value = "";
