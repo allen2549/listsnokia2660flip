@@ -7,28 +7,44 @@
       font-size: 16px;
       margin: 0;
       padding: 0;
-    }
-
-    h1 {
-      font-size: 20px;
-      margin: 10px 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
     }
 
     form {
       margin: 10px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 5px;
+      display: flex;
+      flex-direction: column; /* Alterado para coluna (column) */
+      align-items: center;
     }
 
     input[type="text"] {
-      width: 100%;
+      width: 50%;
       box-sizing: border-box;
-      margin-bottom: 10px;
+      margin-bottom: 10px; /* Adicionado espaço entre o campo de texto e os botões */
       padding: 5px;
       font-size: 16px;
+    }
+
+    input[type="image"].adicionar,
+    input[type="image"].limpar {
+      width: 16px;
+      height: 16px;
+      margin: 0;
+      padding: 0;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    img.logo {
+      width: 32px;
+      height: 32px;
+      margin-bottom: 10px;
     }
 
     ul {
@@ -44,26 +60,6 @@
       align-items: center;
     }
 
-    button {
-      font-size: 16px;
-      padding: 5px;
-      width: 16px;
-      height: 16px;
-      margin-right: 5px; /* Espaço entre o botão e o texto da tarefa */
-      background: none;
-      border: none;
-      cursor: pointer;
-    }
-
-    /* Estilo para redimensionar a imagem do botão Adicionar */
-    input[type="image"].adicionar {
-      width: 16px;
-      height: 16px;
-      margin: 0;
-      padding: 0;
-    }
-
-    /* Estilo para redimensionar a imagem do botão Concluir */
     button.concluir img {
       width: 16px;
       height: 16px;
@@ -71,12 +67,21 @@
       padding: 0;
     }
 
-    /* Estilo para redimensionar a imagem do botão Limpar */
     button.limpar img {
       width: 16px;
       height: 16px;
       margin: 0;
       padding: 0;
+    }
+
+    .botoes {
+      display: flex;
+      flex-direction: column;
+      margin-top: 10px;
+    }
+
+    .botoes button {
+      margin-bottom: 10px;
     }
 
     @media screen and (max-width: 240px) {
@@ -90,21 +95,19 @@
   </style>
 </head>
 <body>
-  <h1>Lista de Tarefas</h1>
+  <div>
+    <img class="logo" src="https://cdn-icons-png.flaticon.com/512/9717/9717679.png" alt="Logo">
 
-  <form onsubmit="return adicionarItem()">
-    <label for="valor">Tarefa:</label>
-    <input type="text" id="valor" name="valor" onkeydown="if(event.key==='Enter') return adicionarItem()">
-    <!-- Substituído o texto do botão por uma imagem -->
-    <input type="image" class="adicionar" src="https://cdn-icons-png.flaticon.com/512/738/738882.png" alt="Adicionar">
-  </form>
+    <form onsubmit="return adicionarItem()">
+      <input type="text" id="valor" name="valor" placeholder="Digite" onkeydown="if(event.key==='Enter') return adicionarItem()">
+      <div class="botoes"> <!-- Adicionada uma div para agrupar os botões -->
+        <input type="image" class="adicionar" src="https://cdn-icons-png.flaticon.com/512/738/738882.png" alt="Adicionar">
+        <input type="image" class="limpar" src="https://cdn-icons-png.flaticon.com/512/505/505445.png" alt="Limpar">
+      </div>
+    </form>
 
-  <ul id="lista"></ul>
-
-  <button type="button" class="limpar" onclick="limpar()">
-    <!-- Substituído o texto do botão por uma imagem -->
-    <img src="https://cdn-icons-png.flaticon.com/512/505/505445.png" alt="Limpar">
-  </button>
+    <ul id="lista"></ul>
+  </div>
 
   <script>
     var contador = 1;
@@ -122,7 +125,6 @@
           concluirItem(novoItem.id);
         };
 
-        // Substituído o texto do botão por uma imagem
         var imgConcluir = document.createElement("img");
         imgConcluir.src = "https://cdn-icons-png.flaticon.com/512/4646/4646135.png";
         imgConcluir.alt = "Concluir";
@@ -137,9 +139,9 @@
         document.getElementById("valor").value = "";
         contador++;
 
-        return false; // Impede o envio do formulário
+        return false;
       }
-      return true; // Permite o envio do formulário
+      return true;
     }
 
     function concluirItem(id) {
