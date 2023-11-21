@@ -14,13 +14,13 @@
       align-items: center;
       height: 100vh;
       text-align: center;
-      background-color: #333; /* Cor de fundo no modo escuro */
-      color: #fff; /* Cor do texto no modo escuro */
+      background-color: #000; /* Cor de fundo preta */
+      color: #fff; /* Cor do texto em branco */
     }
 
     body.dark-mode {
-      background-color: #333; /* Cor de fundo no modo escuro */
-      color: #fff; /* Cor do texto no modo escuro */
+      background-color: #000; /* Cor de fundo preta */
+      color: #fff; /* Cor do texto em branco */
     }
 
     form {
@@ -36,6 +36,8 @@
       margin-bottom: 10px;
       padding: 5px;
       font-size: 16px;
+      color: #fff; /* Cor do texto em branco */
+      background-color: #333; /* Cor de fundo no modo escuro */
     }
 
     button {
@@ -94,7 +96,7 @@
       <input type="text" id="valor" name="valor" placeholder="Digite" onkeydown="if(event.key==='Enter') return adicionarItem()">
       <div class="botoes">
         <button class="adicionar" onclick="return adicionarItem()">+</button>
-        <!--<button class="concluir" onclick="return adicionarItem()">✓</button>-->
+        <!--<button class="concluir" onclick="return adicionarItem()">></button>-->
         <button class="limpar" onclick="limpar()">×</button>
       </div>
     </form>
@@ -114,7 +116,7 @@
 
         var concluirButton = document.createElement("button");
         concluirButton.className = "concluir";
-        concluirButton.innerHTML = "✓"; // Usando o caractere unicode ✓
+        concluirButton.innerHTML = ">"; // Usando o caractere unicode >
         concluirButton.onclick = function() {
           concluirItem(novoItem.id);
         };
