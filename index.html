@@ -106,7 +106,7 @@
 <body>
   <div>
     <h2>Listas</h2>
-    <form action="./interacao_bd.php" method="post" onsubmit="return adicionarItem()">
+    <form id="formulario">
       <input type="text" id="descricao" name="descricao" placeholder="Digite" onkeydown="if(event.key==='Enter') return adicionarItem()">
       <div class="botoes">
         <button class="adicionar" onclick="adicionarItem()">+</button>
@@ -120,7 +120,9 @@
   </div>
 
   <script>
-    // Código JavaScript aqui
+    document.addEventListener("DOMContentLoaded", function() {
+        carregarListaTarefas();
+    });
   </script>
 </body>
 </html>
