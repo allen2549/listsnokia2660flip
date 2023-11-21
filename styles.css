@@ -1,0 +1,118 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* 100% da altura da viewport */
+}
+
+.container {
+    max-width: 240px;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    font-size: 16px;
+    text-align: center;
+    color: #333;
+}
+
+.input-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+input[type="text"] {
+    flex: 1;
+    padding: 8px;
+    width: 60%;
+    box-sizing: border-box;
+}
+
+button {
+    padding: 8px;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    padding: 8px;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+li:hover {
+    background-color: #f9f9f9;
+}
+
+/* Estilo para o ícone de lixeira */
+.fa-trash-alt {
+    font-size: 16px;
+    color: #ff6347; /* Cor vermelha para o ícone de lixeira */
+    cursor: pointer;
+}
+
+/* Adição de um pequeno espaçamento abaixo do botão */
+button + ul {
+    margin-top: 15px;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+.fade-item {
+  transition: transform 0.5s ease;
+}
+.fade-enter, .fade-leave-to {
+  transform: translateY(20px);
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+.fade-item {
+  transition: transform 0.5s ease;
+  list-style-type: none;
+  margin-bottom: 10px;
+}
+.fade-enter, .fade-leave-to {
+  transform: translateY(20px);
+}
+.delete-icon {
+  margin-left: 10px;
+  cursor: pointer;
+}
+

@@ -2,55 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Tarefas</title>
-    <style>
-        .concluido {
-            text-decoration: line-through;
-            color: #888;
-        }
-    </style>
+    <meta name="viewport" content="width=240, height=320, initial-scale=1.0, user-scalable=no">
+    <title>Tarefas e Listas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/3789/3789946.png">
 </head>
 <body>
-
-    <h1>Minha Lista de Tarefas</h1>
-
-    <!-- Formulário de Cadastro de Tarefa -->
-    <form action="cadastrar_tarefa.php" method="post">
-        <label for="tarefa">Selecione a Tarefa:</label>
-        <select id="tarefa" name="tarefa" required>
-            <option value="Abacate">Abacate</option>
-            <option value="Melão">Melão</option>
-            <option value="Mamão">Mamão</option>
-        </select>
-
-        <button type="submit">Adicionar Tarefa</button>
-    </form>
-
-    <!-- Lista de Tarefas -->
-    <h2>Lista de Tarefas</h2>
-    <ul id="listaTarefas">
-        <!-- Exibir tarefas cadastradas -->
-        <?php foreach ($tarefas as $tarefa) : ?>
-            <li class="<?php echo $tarefa['concluido'] ? 'concluido' : ''; ?>">
-                <?php echo $tarefa['descricao']; ?>
-                <button onclick="concluirTarefa('<?php echo $tarefa['descricao']; ?>')">Concluir</button>
-                <button onclick="excluirTarefa('<?php echo $tarefa['descricao']; ?>')">Excluir</button>
+    <div id="app" class="container">
+        <h1>Lista</h1>
+        <div class="input-container">
+            <input type="text" v-model="newTask" placeholder="">
+            <button @click="addTask"><i class="fas fa-plus"></i></button>
+        </div>
+        <transition-group name="fade" tag="ul">
+            <li v-for="(task, index) in taskList" :key="index" class="fade-item">
+                <input type="checkbox" v-model="task.completed"> {{ task.text }}
+                <span class="delete-icon" @click="removeTask(index)"><i class="fas fa-trash"></i></span>
             </li>
-        <?php endforeach; ?>
-    </ul>
+        </transition-group>
+    </div>
 
-    <script>
-        function concluirTarefa(descricao) {
-            // Lógica para marcar a tarefa como concluída no banco de dados (pode ser feito via AJAX)
-            alert('Tarefa "' + descricao + '" concluída!');
-        }
-
-        function excluirTarefa(descricao) {
-            // Lógica para excluir a tarefa do banco de dados (pode ser feito via AJAX)
-            alert('Tarefa "' + descricao + '" excluída!');
-        }
-    </script>
-
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script src="script.js"></script>
 </body>
 </html>
