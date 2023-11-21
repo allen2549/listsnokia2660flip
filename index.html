@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +8,7 @@
     body {
       font-family: 'Calibri', sans-serif;
       font-size: 16px;
-      margin: 10% 0 0; /* Adiciona margem superior de 10% */
+      margin: 10% 0 0;
       padding: 0;
       display: flex;
       flex-direction: column;
@@ -34,7 +33,7 @@
     }
 
     input[type="text"] {
-      width: 80%; /* Ajusta a largura para 80% da largura do contêiner pai */
+      width: 80%;
       box-sizing: border-box;
       margin-bottom: 10px;
       padding: 5px;
@@ -43,7 +42,7 @@
       background-color: #333;
       text-align: center;
       border: none;
-      border-radius: 5px; /* Adiciona bordas arredondadas */
+      border-radius: 5px;
     }
 
     ::placeholder {
@@ -54,7 +53,7 @@
     button {
       width: 40px;
       height: 40px;
-      margin: 0 1px; /* Espaço de 1 pixels entre os botões */
+      margin: 0 1px;
       padding: 0;
       background: none;
       border: none;
@@ -62,7 +61,7 @@
       color: #fff;
       font-weight: bold;
       font-size: 18px;
-      border-radius: 50%; /* Adiciona bordas arredondadas */
+      border-radius: 50%;
     }
 
     ul {
@@ -77,14 +76,14 @@
       font-size: 16px;
       display: flex;
       align-items: center;
-      justify-content: space-between; /* Alinha os elementos à direita */
+      justify-content: space-between;
       padding: 5px;
-      border-radius: 5px; /* Adiciona bordas arredondadas */
-      transition: background-color 0.3s; /* Adiciona uma transição suave na mudança de cor de fundo */
+      border-radius: 5px;
+      transition: background-color 0.3s;
     }
 
     li:hover {
-      background-color: #333; /* Tom de cinza escuro ao passar o mouse */
+      background-color: #333;
     }
 
     .botoes {
@@ -98,16 +97,40 @@
 
     @media screen and (max-width: 480px) {
       input[type="text"] {
-        width: 100%; /* Em telas menores, ajusta a largura para 100% */
+        width: 100%;
       }
     }
   </style>
-</head>
+  <script>
+    function adicionarItem() {
+      var valorInput = document.getElementById("valor").value;
+      if (valorInput.trim() !== "") {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "interacao_bd.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState == 4 && xhr.status == 200) {
+            var resposta = JSON.parse(xhr.responseText);
+            if (resposta.status === "success") {
+              alert(resposta.mensagem);
+              // Recarrega a página ou atualiza a lista de tarefas de alguma forma
+            } else {
+              alert(resposta.mensagem);
+            }
+          }
+        };
 
+        xhr.send("acao=adicionarItem&descricao=" + encodeURIComponent(valorInput));
+      }
+
+      return false;
+    }
+  </script>
+</head>
 <body>
   <div>
     <h2>Listas</h2>
-    <form onsubmit="return adicionarItem()">
+    <form action="interacao_bd.php" method="post" onsubmit="return adicionarItem()">
       <input type="text" id="valor" name="valor" placeholder="Digite" onkeydown="if(event.key==='Enter') return adicionarItem()">
       <div class="botoes">
         <button class="adicionar" onclick="adicionarItem()">+</button>
@@ -117,70 +140,5 @@
 
     <ul id="lista"></ul>
   </div>
-
-  <script>
-    var contador = 1;
-
-    function adicionarItem() {
-      var valorInput = document.getElementById("valor").value;
-      if (valorInput.trim() !== "") {
-        var lista = document.getElementById("lista");
-        var novoItem = document.createElement("li");
-        novoItem.id = "item" + contador;
-
-        var concluirButton = document.createElement("button");
-        concluirButton.className = "concluir";
-        concluirButton.innerHTML = ">";
-        concluirButton.onclick = function() {
-          concluirItem(novoItem.id);
-        };
-
-        var excluirButton = document.createElement("button");
-        excluirButton.className = "excluir";
-        excluirButton.innerHTML = "X";
-        excluirButton.onclick = function() {
-          excluirItem(novoItem.id);
-        };
-
-        novoItem.appendChild(document.createTextNode(valorInput));
-        novoItem.appendChild(concluirButton);
-        novoItem.appendChild(excluirButton);
-        lista.appendChild(novoItem);
-        document.getElementById("valor").value = "";
-        contador++;
-
-        return false;
-      }
-      return false;
-    }
-
-    function concluirItem(id) {
-      var item = document.getElementById(id);
-      var marcado = item.style.textDecoration === "line-through";
-
-      if (marcado) {
-        item.style.textDecoration = "none";
-        item.style.color = "white"; // Altera a cor do texto para branco ao desmarcar
-      } else {
-        item.style.textDecoration = "line-through";
-        item.style.color = "green"; // Altera a cor do texto para verde ao marcar
-      }
-    }
-
-    function excluirItem(id) {
-      var item = document.getElementById(id);
-      item.parentNode.removeChild(item);
-    }
-
-    function limpar() {
-      var lista = document.getElementById("lista");
-      var ultimoItem = lista.lastElementChild;
-
-      if (ultimoItem) {
-        lista.removeChild(ultimoItem);
-      }
-    }
-  </script>
 </body>
-
 </html>
