@@ -118,4 +118,37 @@ function adicionarItem() {
     return false;
 }
 
+function gravarNoBanco() {
+    var lista = document.getElementById("lista");
+    var itens = lista.getElementsByTagName("li");
+    var descricoes = [];
+
+    for (var i = 0; i < itens.length; i++) {
+        descricoes.push(itens[i].textContent.trim());
+    }
+
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4) {
+            console.log("Status da requisição:", xhr.status);
+            console.log("Resposta do servidor:", xhr.responseText);
+
+            if (xhr.status == 200) {
+                var resposta = JSON.parse(xhr.responseText);
+                if (resposta.status === "success") {
+                    console.log(resposta.mensagem);
+                } else {
+                    console.error(resposta.mensagem);
+                }
+            } else {
+                console.error("Erro na requisição ao servidor.");
+            }
+        }
+    };
+
+    xhr.open("POST", "./interacao_bd.php", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.send("acao=gravarLista&descricoes=" + encodeURIComponent(JSON.stringify(descricoes)));
+}
+
 // Restante do código (concluirItem, excluirItem, limpar) sem alterações
