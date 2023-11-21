@@ -30,20 +30,25 @@
     <!-- Lista de Tarefas -->
     <h2>Lista de Tarefas</h2>
     <ul id="listaTarefas">
-        <!-- Aqui você pode exibir dinamicamente as tarefas cadastradas -->
-        <!-- Cada item da lista possui botões para concluir e excluir -->
-        <li id="tarefa1">Tarefa exemplo <button onclick="concluirTarefa('tarefa1')">Concluir</button> <button onclick="excluirTarefa('tarefa1')">Excluir</button></li>
+        <!-- Exibir tarefas cadastradas -->
+        <?php foreach ($tarefas as $tarefa) : ?>
+            <li class="<?php echo $tarefa['concluido'] ? 'concluido' : ''; ?>">
+                <?php echo $tarefa['descricao']; ?>
+                <button onclick="concluirTarefa('<?php echo $tarefa['descricao']; ?>')">Concluir</button>
+                <button onclick="excluirTarefa('<?php echo $tarefa['descricao']; ?>')">Excluir</button>
+            </li>
+        <?php endforeach; ?>
     </ul>
 
     <script>
-        function concluirTarefa(idTarefa) {
-            var tarefa = document.getElementById(idTarefa);
-            tarefa.classList.add('concluido');
+        function concluirTarefa(descricao) {
+            // Lógica para marcar a tarefa como concluída no banco de dados (pode ser feito via AJAX)
+            alert('Tarefa "' + descricao + '" concluída!');
         }
 
-        function excluirTarefa(idTarefa) {
-            var tarefa = document.getElementById(idTarefa);
-            tarefa.remove();
+        function excluirTarefa(descricao) {
+            // Lógica para excluir a tarefa do banco de dados (pode ser feito via AJAX)
+            alert('Tarefa "' + descricao + '" excluída!');
         }
     </script>
 
