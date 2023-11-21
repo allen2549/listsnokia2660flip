@@ -14,7 +14,7 @@ if (!$conn) {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST["acao"]) && $_POST["acao"] == "adicionarItem") {
         $descricao = $_POST["descricao"];
-        $query = "INSERT INTO ListaDeTarefas (descricao) VALUES ($1)";
+        $query = "INSERT INTO listadetarefas (descricao) VALUES ($1)";
         $result = pg_query_params($conn, $query, array($descricao));
 
         if ($result) {
