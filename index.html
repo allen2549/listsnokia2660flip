@@ -1,12 +1,15 @@
-<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
-<html>
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lista de Tarefas</title>
   <style>
     body {
-      font-family: 'Calibri', sans-serif; /* Definindo a fonte Calibri */
+      font-family: 'Calibri', sans-serif;
       font-size: 16px;
-      margin: 0;
+      margin: 10% 0 0; /* Adiciona margem superior de 10% */
       padding: 0;
       display: flex;
       flex-direction: column;
@@ -14,13 +17,13 @@
       align-items: center;
       height: 100vh;
       text-align: center;
-      background-color: #000; /* Cor de fundo preta */
-      color: #fff; /* Cor do texto em branco */
+      background-color: #000;
+      color: #fff;
     }
 
     body.dark-mode {
-      background-color: #000; /* Cor de fundo preta */
-      color: #fff; /* Cor do texto em branco */
+      background-color: #000;
+      color: #fff;
     }
 
     form {
@@ -36,36 +39,36 @@
       margin-bottom: 10px;
       padding: 5px;
       font-size: 16px;
-      color: #fff; /* Cor do texto em branco */
-      background-color: #333; /* Cor de fundo no modo escuro */
-      text-align: center; /* Centralizando o texto no campo de texto */
-      border: none; /* Removendo a borda */
+      color: #fff;
+      background-color: #333;
+      text-align: center;
+      border: none;
     }
 
     ::placeholder {
-      color: #fff; /* Cor do texto do placeholder em branco */
-      text-align: center; /* Centralizando o texto do placeholder */
+      color: #fff;
+      text-align: center;
     }
 
     button {
-      width: 40px; /* Aumentei o tamanho dos botões */
-      height: 40px; /* Aumentei o tamanho dos botões */
+      width: 40px;
+      height: 40px;
       margin: 0 5px;
       padding: 0;
       background: none;
-      border: none; /* Removendo a borda */
+      border: none;
       cursor: pointer;
-      color: #fff; /* Fonte em branco */
-      font-weight: bold; /* Negrito */
-      font-size: 18px; /* Aumentei o tamanho da fonte */
+      color: #fff;
+      font-weight: bold;
+      font-size: 18px;
     }
 
     ul {
-      list-style-type: none; /* Removendo os marcadores da lista */
+      list-style-type: none;
       padding: 0;
       margin: 0;
       text-align: left;
-      border: none; /* Removendo a borda */
+      border: none;
     }
 
     li {
@@ -91,12 +94,14 @@
       input[type="text"] {
         font-size: 14px;
       }
-      li, button {
+      li,
+      button {
         font-size: 14px;
       }
     }
   </style>
 </head>
+
 <body>
   <div>
     <h2>Listas</h2>
@@ -116,31 +121,27 @@
 
     function adicionarItem() {
       var valorInput = document.getElementById("valor").value;
-      if (valorInput.trim() !== "") { // Verifica se o valor não está vazio ou apenas contém espaços em branco
+      if (valorInput.trim() !== "") {
         var lista = document.getElementById("lista");
-
         var novoItem = document.createElement("li");
         novoItem.id = "item" + contador;
 
         var concluirButton = document.createElement("button");
         concluirButton.className = "concluir";
-        concluirButton.innerHTML = ">"; // Usando o caractere unicode >
+        concluirButton.innerHTML = ">";
         concluirButton.onclick = function() {
           concluirItem(novoItem.id);
         };
 
         novoItem.appendChild(concluirButton);
-
         novoItem.appendChild(document.createTextNode(valorInput));
-
         lista.appendChild(novoItem);
-
         document.getElementById("valor").value = "";
         contador++;
 
         return false;
       }
-      return false; // Evita a submissão do formulário se o campo estiver vazio
+      return false;
     }
 
     function concluirItem(id) {
@@ -153,4 +154,5 @@
     }
   </script>
 </body>
+
 </html>
