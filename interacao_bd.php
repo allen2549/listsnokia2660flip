@@ -1,5 +1,11 @@
 <?php
-$conn = pg_connect("host=seu_host dbname=sua_base_de_dados user=seu_usuario password=sua_senha");
+$host = "isabelle.db.elephantsql.com";
+$port = "5432";
+$dbname = "hsmmaodv";
+$user = "hsmmaodv";
+$password = "hfUmqQWcE75C6TnkjlXoWFks2CypUQ_A";
+
+$conn = pg_connect("host=$host port=$port dbname=$dbname user=$user password=$password");
 
 if (!$conn) {
     die("Falha na conexão com o banco de dados");
