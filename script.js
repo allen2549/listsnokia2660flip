@@ -27,18 +27,47 @@ function carregarListaTarefas() {
 }
 
 function adicionarItem() {
-    // Função adicionarItem aqui
+    var descricaoInput = document.getElementById("descricao").value;
+    if (descricaoInput.trim() !== "") {
+        var lista = document.getElementById("lista");
+        var novoItem = document.createElement("li");
+        novoItem.appendChild(document.createTextNode(descricaoInput));
+        lista.appendChild(novoItem);
+        document.getElementById("descricao").value = "";
+
+        // Envia a descrição para o servidor para ser adicionada ao banco de dados
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                var resposta = JSON.parse(xhr.responseText);
+                if (resposta.status === "success") {
+                    console.log(resposta.mensagem);
+                } else {
+                    console.error(resposta.mensagem);
+                }
+            }
+        };
+
+        xhr.open("POST", "./interacao_bd.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.send("acao=adicionarItem&descricao=" + encodeURIComponent(descricaoInput));
+
+        return false;
+    }
     return false;
 }
 
+// Função para concluir uma tarefa (código omitido, pois não foi fornecido na conversa)
 function concluirItem(id) {
-    // Função concluirItem aqui
+    // Lógica para concluir uma tarefa
 }
 
+// Função para excluir uma tarefa (código omitido, pois não foi fornecido na conversa)
 function excluirItem(id) {
-    // Função excluirItem aqui
+    // Lógica para excluir uma tarefa
 }
 
+// Função para limpar a lista (código omitido, pois não foi fornecido na conversa)
 function limpar() {
-    // Função limpar aqui
+    // Lógica para limpar a lista
 }
