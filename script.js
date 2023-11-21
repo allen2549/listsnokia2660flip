@@ -1,25 +1,63 @@
-<script>
-  function adicionarItem() {
-    var valorInput = document.getElementById("valor").value;
-    if (valorInput.trim() !== "") {
-      var xhr = new XMLHttpRequest();
-      xhr.open("POST", "interacao_bd.php", true);
-      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-          var resposta = JSON.parse(xhr.responseText);
-          if (resposta.status === "success") {
-            alert(resposta.mensagem);
-            // Recarrega a página ou atualiza a lista de tarefas de alguma forma
-          } else {
-            alert(resposta.mensagem);
-          }
-        }
-      };
+var contador = 1;
 
-      xhr.send("acao=adicionarItem&descricao=" + encodeURIComponent(valorInput));
-    }
+function adicionarItem() {
+  var descricaoInput = document.getElementById("descricao").value;
+  if (descricaoInput.trim() !== "") {
+    var lista = document.getElementById("lista");
+    var novoItem = document.createElement("li");
+    novoItem.id = "item" + contador;
+
+    var concluirButton = document.createElement("button");
+    concluirButton.className = "concluir";
+    concluirButton.innerHTML = ">";
+    concluirButton.onclick = function() {
+      concluirItem(novoItem.id);
+    };
+
+    var excluirButton = document.createElement("button");
+    excluirButton.className = "excluir";
+    excluirButton.innerHTML = "X";
+    excluirButton.onclick = function() {
+      excluirItem(novoItem.id);
+    };
+
+    novoItem.appendChild(document.createTextNode(descricaoInput));
+    novoItem.appendChild(concluirButton);
+    novoItem.appendChild(excluirButton);
+    lista.appendChild(novoItem);
+    document.getElementById("descricao").value = "";
+    contador++;
+
+    // Aqui você pode adicionar código para enviar os dados para o servidor (opcional).
 
     return false;
   }
-</script>
+  return false;
+}
+
+function concluirItem(id) {
+  var item = document.getElementById(id);
+  var marcado = item.style.textDecoration === "line-through";
+
+  if (marcado) {
+    item.style.textDecoration = "none";
+    item.style.color = "white";
+  } else {
+    item.style.textDecoration = "line-through";
+    item.style.color = "green";
+  }
+}
+
+function excluirItem(id) {
+  var item = document.getElementById(id);
+  item.parentNode.removeChild(item);
+}
+
+function limpar() {
+  var lista = document.getElementById("lista");
+  var ultimoItem = lista.lastElementChild;
+
+  if (ultimoItem) {
+    lista.removeChild(ultimoItem);
+  }
+}
