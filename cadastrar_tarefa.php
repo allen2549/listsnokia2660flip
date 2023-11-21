@@ -31,6 +31,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
+// Selecionar tarefas existentes no banco de dados
+$querySelect = "SELECT descricao, concluido FROM lista_tarefas";
+$resultadoSelect = pg_query($conexao, $querySelect);
+
+// Criar array para armazenar as tarefas
+$tarefas = array();
+while ($linha = pg_fetch_assoc($resultadoSelect)) {
+    $tarefas[] = $linha;
+}
+
 // Fechar a conexão com o banco de dados
 pg_close($conexao);
 ?>
