@@ -1,45 +1,25 @@
-let items = []; // Array para armazenar os itens
+<script>
+  function adicionarItem() {
+    var valorInput = document.getElementById("valor").value;
+    if (valorInput.trim() !== "") {
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "interacao_bd.php", true);
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+          var resposta = JSON.parse(xhr.responseText);
+          if (resposta.status === "success") {
+            alert(resposta.mensagem);
+            // Recarrega a página ou atualiza a lista de tarefas de alguma forma
+          } else {
+            alert(resposta.mensagem);
+          }
+        }
+      };
 
-function addItem() {
-    const itemTitle = document.getElementById('item').value;
-    const itemValue = document.getElementById('value').value;
-    const todoList = document.getElementById('todoList');
-    
-    if (itemTitle === "") {
-        alert("Digite o título do item antes de adicionar.");
-        return;
+      xhr.send("acao=adicionarItem&descricao=" + encodeURIComponent(valorInput));
     }
 
-    const newItem = {
-        title: itemTitle,
-        value: itemValue
-    };
-
-    items.push(newItem);
-
-    const listItem = document.createElement('li');
-    listItem.innerHTML = `
-        <span>${newItem.title} - ${newItem.value}</span>
-        <button onclick="toggleComplete(this)">✅</button>
-    `;
-
-    todoList.appendChild(listItem);
-    document.getElementById('item').value = "";
-    document.getElementById('value').value = "";
-}
-
-function toggleComplete(button) {
-    const listItem = button.parentNode;
-    listItem.classList.toggle('completed');
-}
-
-function removeItem() {
-    const todoList = document.getElementById('todoList');
-    const completedItems = document.querySelectorAll('.completed');
-
-    completedItems.forEach(item => {
-        const index = Array.from(todoList.children).indexOf(item);
-        items.splice(index, 1);
-        todoList.removeChild(item);
-    });
-}
+    return false;
+  }
+</script>
