@@ -1,130 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lista de Tarefas</title>
-  <style>
-    body {
-      font-family: 'Calibri', sans-serif;
-      font-size: 16px;
-      margin: 10% 0 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      text-align: center;
-      background-color: #000;
-      color: #fff;
-    }
-
-    body.dark-mode {
-      background-color: #000;
-      color: #fff;
-    }
-
-    form {
-      margin: 10px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    input[type="text"] {
-      width: 80%;
-      box-sizing: border-box;
-      margin-bottom: 10px;
-      padding: 5px;
-      font-size: 16px;
-      color: #fff;
-      background-color: #333;
-      text-align: center;
-      border: none;
-      border-radius: 5px;
-    }
-
-    ::placeholder {
-      color: #fff;
-      text-align: center;
-    }
-
-    button {
-      width: 40px;
-      height: 40px;
-      margin: 0 1px;
-      padding: 0;
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: #fff;
-      font-weight: bold;
-      font-size: 18px;
-      border-radius: 50%;
-    }
-
-    ul {
-      list-style-type: none;
-      padding: 0;
-      margin: 0;
-      text-align: left;
-    }
-
-    li {
-      margin-bottom: 5px;
-      font-size: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 5px;
-      border-radius: 5px;
-      transition: background-color 0.3s;
-    }
-
-    li:hover {
-      background-color: #333;
-    }
-
-    .botoes {
-      display: flex;
-      margin-top: 10px;
-    }
-
-    .botoes button {
-      margin-right: 5px;
-    }
-
-    @media screen and (max-width: 480px) {
-      input[type="text"] {
-        width: 100%;
-      }
-    }
-  </style>
-  <script src="https://allen2549.github.io/listsnokia2660flip/script.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Tarefas</title>
+    <style>
+        .concluido {
+            text-decoration: line-through;
+            color: #888;
+        }
+    </style>
 </head>
 <body>
-  <div>
-    <h2>Listas</h2>
-    <form id="formulario">
-      <input type="text" id="descricao" name="descricao" placeholder="Digite" onkeydown="if(event.key==='Enter') return adicionarItem()">
-      <div class="botoes">
-        <button class="adicionar" onclick="adicionarItem()">+</button>
-        <button class="limpar" onclick="limpar()">X</button>
-        <button class="gravar" onclick="gravarNoBanco()">Gravar</button>
-      </div>
+
+    <h1>Minha Lista de Tarefas</h1>
+
+    <!-- Formulário de Cadastro de Tarefa -->
+    <form action="cadastrar_tarefa.php" method="post">
+        <label for="descricao">Tarefa:</label>
+        <input type="text" id="descricao" name="descricao" required>
+
+        <button type="submit">Adicionar Tarefa</button>
     </form>
 
-    <h3>Lista de Tarefas</h3>
-    <ul id="lista">
-      <!-- Aqui será exibida a lista de tarefas cadastradas -->
+    <!-- Lista de Tarefas -->
+    <h2>Lista de Tarefas</h2>
+    <ul id="listaTarefas">
+        <!-- Aqui você pode exibir dinamicamente as tarefas cadastradas -->
+        <!-- Cada item da lista possui botões para concluir e excluir -->
+        <li id="tarefa1">Tarefa exemplo <button onclick="concluirTarefa('tarefa1')">Concluir</button> <button onclick="excluirTarefa('tarefa1')">Excluir</button></li>
     </ul>
 
-    <!-- Nova seção para exibir a lista do banco de dados -->
-    <h3>Lista do Banco de Dados</h3>
-    <ul id="listaBanco">
-      <!-- Aqui será exibida a lista de tarefas do banco de dados -->
-    </ul>
-  </div>
+    <script>
+        function concluirTarefa(idTarefa) {
+            var tarefa = document.getElementById(idTarefa);
+            tarefa.classList.add('concluido');
+        }
+
+        function excluirTarefa(idTarefa) {
+            var tarefa = document.getElementById(idTarefa);
+            tarefa.remove();
+        }
+    </script>
+
 </body>
 </html>
