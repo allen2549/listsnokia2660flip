@@ -34,7 +34,7 @@
     }
 
     input[type="text"] {
-      width: 50%;
+      width: 80%; /* Ajusta a largura para 80% da largura do contêiner pai */
       box-sizing: border-box;
       margin-bottom: 10px;
       padding: 5px;
@@ -54,7 +54,7 @@
     button {
       width: 40px;
       height: 40px;
-      margin: 0 5px;
+      margin: 0 1px; /* Espaço de 1 pixels entre os botões */
       padding: 0;
       background: none;
       border: none;
@@ -70,7 +70,6 @@
       padding: 0;
       margin: 0;
       text-align: left;
-      border: none;
     }
 
     li {
@@ -78,9 +77,14 @@
       font-size: 16px;
       display: flex;
       align-items: center;
-      border: 1px solid #ccc;
+      justify-content: space-between; /* Alinha os elementos à direita */
       padding: 5px;
       border-radius: 5px; /* Adiciona bordas arredondadas */
+      transition: background-color 0.3s; /* Adiciona uma transição suave na mudança de cor de fundo */
+    }
+
+    li:hover {
+      background-color: #333; /* Tom de cinza escuro ao passar o mouse */
     }
 
     .botoes {
@@ -92,13 +96,9 @@
       margin-right: 5px;
     }
 
-    @media screen and (max-width: 240px) {
+    @media screen and (max-width: 480px) {
       input[type="text"] {
-        font-size: 14px;
-      }
-      li,
-      button {
-        font-size: 14px;
+        width: 100%; /* Em telas menores, ajusta a largura para 100% */
       }
     }
   </style>
@@ -135,8 +135,16 @@
           concluirItem(novoItem.id);
         };
 
-        novoItem.appendChild(concluirButton);
+        var excluirButton = document.createElement("button");
+        excluirButton.className = "excluir";
+        excluirButton.innerHTML = "X";
+        excluirButton.onclick = function() {
+          excluirItem(novoItem.id);
+        };
+
         novoItem.appendChild(document.createTextNode(valorInput));
+        novoItem.appendChild(concluirButton);
+        novoItem.appendChild(excluirButton);
         lista.appendChild(novoItem);
         document.getElementById("valor").value = "";
         contador++;
@@ -152,11 +160,16 @@
 
       if (marcado) {
         item.style.textDecoration = "none";
-        item.style.color = "#000"; // Altera a cor do texto para preto ao desmarcar
+        item.style.color = "white"; // Altera a cor do texto para branco ao desmarcar
       } else {
         item.style.textDecoration = "line-through";
         item.style.color = "green"; // Altera a cor do texto para verde ao marcar
       }
+    }
+
+    function excluirItem(id) {
+      var item = document.getElementById(id);
+      item.parentNode.removeChild(item);
     }
 
     function limpar() {
