@@ -14,18 +14,21 @@ if (!$conexao) {
     die("Falha na conexão com o banco de dados");
 }
 
-// Obter dados do formulário
-$descricao = $_POST['descricao'];
+// Verificar se o formulário foi enviado
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Obter dados do formulário
+    $descricao = $_POST['descricao'];
 
-// Inserir tarefa no banco de dados
-$query = "INSERT INTO lista_tarefas (descricao) VALUES ('$descricao')";
-$resultado = pg_query($conexao, $query);
+    // Inserir tarefa no banco de dados
+    $query = "INSERT INTO lista_tarefas (descricao) VALUES ('$descricao')";
+    $resultado = pg_query($conexao, $query);
 
-// Verificar se a inserção foi bem-sucedida
-if ($resultado) {
-    echo "Tarefa adicionada com sucesso!";
-} else {
-    echo "Erro ao adicionar tarefa.";
+    // Verificar se a inserção foi bem-sucedida
+    if ($resultado) {
+        echo "Tarefa adicionada com sucesso!";
+    } else {
+        echo "Erro ao adicionar tarefa.";
+    }
 }
 
 // Fechar a conexão com o banco de dados
