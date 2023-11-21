@@ -146,11 +146,22 @@
 
     function concluirItem(id) {
       var item = document.getElementById(id);
-      item.style.textDecoration = "line-through";
+      var marcado = item.style.textDecoration === "line-through";
+
+      if (marcado) {
+        item.style.textDecoration = "none";
+      } else {
+        item.style.textDecoration = "line-through";
+      }
     }
 
     function limpar() {
-      location.reload();
+      var lista = document.getElementById("lista");
+      var ultimoItem = lista.lastElementChild;
+
+      if (ultimoItem) {
+        lista.removeChild(ultimoItem);
+      }
     }
   </script>
 </body>
