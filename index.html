@@ -104,8 +104,7 @@
       <input type="text" id="valor" name="valor" placeholder="Digite" onkeydown="if(event.key==='Enter') return adicionarItem()">
       <div class="botoes">
         <button class="adicionar" onclick="adicionarItem()">+</button>
-        <!--<button class="concluir" onclick="return adicionarItem()">✓</button>-->
-        <button class="limpar" onclick="limpar()">×</button>
+        <button class="limpar" onclick="limpar()">X</button>
       </div>
     </form>
 
@@ -125,7 +124,7 @@
 
         var concluirButton = document.createElement("button");
         concluirButton.className = "concluir";
-        concluirButton.innerHTML = "✓"; // Usando o caractere unicode ✓
+        concluirButton.innerHTML = ">"; // Usando o caractere unicode >
         concluirButton.onclick = function() {
           concluirItem(novoItem.id);
         };
