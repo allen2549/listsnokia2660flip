@@ -17,10 +17,10 @@ if (!$conexao) {
 // Verificar se o formulário foi enviado
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Obter dados do formulário
-    $descricao = $_POST['descricao'];
+    $tarefa = $_POST['tarefa'];
 
     // Inserir tarefa no banco de dados
-    $query = "INSERT INTO lista_tarefas (descricao) VALUES ('$descricao')";
+    $query = "INSERT INTO lista_tarefas (descricao) VALUES ('$tarefa')";
     $resultado = pg_query($conexao, $query);
 
     // Verificar se a inserção foi bem-sucedida
