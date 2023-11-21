@@ -17,8 +17,12 @@
 
     <!-- Formulário de Cadastro de Tarefa -->
     <form action="cadastrar_tarefa.php" method="post">
-        <label for="descricao">Tarefa:</label>
-        <input type="text" id="descricao" name="descricao" required>
+        <label for="tarefa">Selecione a Tarefa:</label>
+        <select id="tarefa" name="tarefa" required>
+            <option value="Abacate">Abacate</option>
+            <option value="Melão">Melão</option>
+            <option value="Mamão">Mamão</option>
+        </select>
 
         <button type="submit">Adicionar Tarefa</button>
     </form>
