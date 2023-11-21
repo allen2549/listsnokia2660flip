@@ -15,9 +15,7 @@ function carregarListaTarefas() {
             var listaTarefas = JSON.parse(xhr.responseText);
 
             listaTarefas.forEach(function(tarefa) {
-                var novoItem = document.createElement("li");
-                novoItem.appendChild(document.createTextNode(tarefa));
-                lista.appendChild(novoItem);
+                adicionarItemNaLista(tarefa);
             });
         }
     };
@@ -26,16 +24,36 @@ function carregarListaTarefas() {
     xhr.send();
 }
 
+function adicionarItemNaLista(descricao) {
+    var lista = document.getElementById("lista");
+    var novoItem = document.createElement("li");
+
+    var concluirButton = document.createElement("button");
+    concluirButton.className = "concluir";
+    concluirButton.innerHTML = ">";
+    concluirButton.onclick = function() {
+        concluirItem(descricao);
+    };
+
+    var excluirButton = document.createElement("button");
+    excluirButton.className = "excluir";
+    excluirButton.innerHTML = "X";
+    excluirButton.onclick = function() {
+        excluirItem(descricao);
+    };
+
+    novoItem.appendChild(document.createTextNode(descricao));
+    novoItem.appendChild(concluirButton);
+    novoItem.appendChild(excluirButton);
+
+    lista.appendChild(novoItem);
+}
+
 function adicionarItem() {
     var descricaoInput = document.getElementById("descricao").value;
     if (descricaoInput.trim() !== "") {
-        var lista = document.getElementById("lista");
-        var novoItem = document.createElement("li");
-        novoItem.appendChild(document.createTextNode(descricaoInput));
-        lista.appendChild(novoItem);
-        document.getElementById("descricao").value = "";
+        adicionarItemNaLista(descricaoInput);
 
-        // Envia a descrição para o servidor para ser adicionada ao banco de dados
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function() {
             if (xhr.readyState == 4 && xhr.status == 200) {
@@ -52,22 +70,21 @@ function adicionarItem() {
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xhr.send("acao=adicionarItem&descricao=" + encodeURIComponent(descricaoInput));
 
+        document.getElementById("descricao").value = "";
+
         return false;
     }
     return false;
 }
 
-// Função para concluir uma tarefa (código omitido, pois não foi fornecido na conversa)
-function concluirItem(id) {
-    // Lógica para concluir uma tarefa
+function concluirItem(descricao) {
+    // Lógica para concluir uma tarefa (a ser implementada)
 }
 
-// Função para excluir uma tarefa (código omitido, pois não foi fornecido na conversa)
-function excluirItem(id) {
-    // Lógica para excluir uma tarefa
+function excluirItem(descricao) {
+    // Lógica para excluir uma tarefa (a ser implementada)
 }
 
-// Função para limpar a lista (código omitido, pois não foi fornecido na conversa)
 function limpar() {
-    // Lógica para limpar a lista
+    // Lógica para limpar a lista (a ser implementada)
 }
