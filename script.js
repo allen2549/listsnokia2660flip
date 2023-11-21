@@ -1,8 +1,13 @@
 document.addEventListener("DOMContentLoaded", function() {
-    carregarListaTarefas();
+    carregarListas();
 });
 
-function carregarListaTarefas() {
+function carregarListas() {
+    carregarListaTarefasLocal();
+    carregarListaTarefasBanco();
+}
+
+function carregarListaTarefasLocal() {
     var lista = document.getElementById("lista");
 
     while (lista.firstChild) {
@@ -22,6 +27,35 @@ function carregarListaTarefas() {
 
     xhr.open("GET", "./interacao_bd.php", true);
     xhr.send();
+}
+
+function carregarListaTarefasBanco() {
+    var listaBanco = document.getElementById("listaBanco");
+
+    while (listaBanco.firstChild) {
+        listaBanco.removeChild(listaBanco.firstChild);
+    }
+
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var listaTarefasBanco = JSON.parse(xhr.responseText);
+
+            listaTarefasBanco.forEach(function(tarefa) {
+                adicionarItemNaListaBanco(tarefa);
+            });
+        }
+    };
+
+    xhr.open("GET", "./interacao_bd.php?acao=listarTarefas", true);
+    xhr.send();
+}
+
+function adicionarItemNaListaBanco(descricao) {
+    var listaBanco = document.getElementById("listaBanco");
+    var novoItem = document.createElement("li");
+    novoItem.appendChild(document.createTextNode(descricao));
+    listaBanco.appendChild(novoItem);
 }
 
 function adicionarItemNaLista(descricao) {
