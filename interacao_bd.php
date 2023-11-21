@@ -1,45 +1,81 @@
 <?php
-$host = "isabelle.db.elephantsql.com";
-$port = "5432";
-$dbname = "hsmmaodv";
-$user = "hsmmaodv";
+$acao = $_REQUEST["acao"];
+
+// Configurações do banco de dados
+$servername = "isabelle.db.elephantsql.com";
+$database = "hsmmaodv";
+$username = "hsmmaodv";
 $password = "hfUmqQWcE75C6TnkjlXoWFks2CypUQ_A";
 
-$conn = pg_connect("host=$host port=$port dbname=$dbname user=$user password=$password");
+// Cria a conexão
+$conn = new mysqli($servername, $username, $password, $database);
 
-if (!$conn) {
-    die("Falha na conexão com o banco de dados");
+// Verifica a conexão
+if ($conn->connect_error) {
+    die("Conexão falhou: " . $conn->connect_error);
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST["acao"]) && $_POST["acao"] == "adicionarItem") {
-        $descricao = $_POST["descricao"];
-        $query = "INSERT INTO listadetarefas (descricao) VALUES ($1)";
-        $result = pg_query_params($conn, $query, array($descricao));
+// Lógica para diferentes ações
+if ($acao === "adicionarItem") {
+    $descricao = $_POST["descricao"];
 
-        if ($result) {
-            echo json_encode(array("status" => "success", "mensagem" => "Item adicionado com sucesso."));
-        } else {
-            echo json_encode(array("status" => "error", "mensagem" => "Erro ao adicionar o item."));
-        }
+    $stmt = $conn->prepare("INSERT INTO ListaDeTarefas (descricao) VALUES (?)");
+    $stmt->bind_param("s", $descricao);
+    $stmt->execute();
+    $stmt->close();
+
+    $resposta = ["status" => "success", "mensagem" => "Item adicionado com sucesso."];
+    echo json_encode($resposta);
+} elseif ($acao === "concluirItem") {
+    $id = $_POST["id"];
+
+    $stmt = $conn->prepare("UPDATE ListaDeTarefas SET concluido = 1 - concluido WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $stmt->close();
+
+    $resposta = ["status" => "success", "mensagem" => "Item concluído/desconcluído com sucesso."];
+    echo json_encode($resposta);
+} elseif ($acao === "excluirItem") {
+    $id = $_POST["id"];
+
+    $stmt = $conn->prepare("DELETE FROM ListaDeTarefas WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $stmt->close();
+
+    $resposta = ["status" => "success", "mensagem" => "Item excluído com sucesso."];
+    echo json_encode($resposta);
+} elseif ($acao === "limparLista") {
+    $stmt = $conn->prepare("DELETE FROM ListaDeTarefas");
+    $stmt->execute();
+    $stmt->close();
+
+    $resposta = ["status" => "success", "mensagem" => "Lista limpa com sucesso."];
+    echo json_encode($resposta);
+} elseif ($acao === "listarTarefas") {
+    $result = $conn->query("SELECT descricao FROM ListaDeTarefas");
+
+    $listaTarefas = [];
+    while ($row = $result->fetch_assoc()) {
+        $listaTarefas[] = $row["descricao"];
     }
+
+    echo json_encode($listaTarefas);
+} elseif ($acao === "gravarLista") {
+    $descricoes = json_decode($_POST["descricoes"]);
+
+    foreach ($descricoes as $descricao) {
+        $stmt = $conn->prepare("INSERT INTO ListaDeTarefas (descricao) VALUES (?)");
+        $stmt->bind_param("s", $descricao);
+        $stmt->execute();
+        $stmt->close();
+    }
+
+    $resposta = ["status" => "success", "mensagem" => "Lista gravada com sucesso no banco."];
+    echo json_encode($resposta);
 }
 
-// Consulta para obter todas as tarefas da tabela "listadetarefas"
-$query = "SELECT * FROM listadetarefas";
-$result = pg_query($conn, $query);
-
-if (!$result) {
-    die("Erro na consulta ao banco de dados");
-}
-
-// Monta a lista de tarefas em formato JSON para ser lida pelo JavaScript
-$listaTarefas = array();
-while ($row = pg_fetch_assoc($result)) {
-    $listaTarefas[] = $row['descricao'];
-}
-
-echo json_encode($listaTarefas);
-
-pg_close($conn);
+// Fecha a conexão
+$conn->close();
 ?>
