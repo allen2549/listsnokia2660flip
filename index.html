@@ -38,6 +38,13 @@
       font-size: 16px;
       color: #fff; /* Cor do texto em branco */
       background-color: #333; /* Cor de fundo no modo escuro */
+      text-align: center; /* Centralizando o texto no campo de texto */
+      border: none; /* Removendo a borda */
+    }
+
+    ::placeholder {
+      color: #fff; /* Cor do texto do placeholder em branco */
+      text-align: center; /* Centralizando o texto do placeholder */
     }
 
     button {
@@ -54,10 +61,11 @@
     }
 
     ul {
-      list-style-type: none;
+      list-style-type: none; /* Removendo os marcadores da lista */
       padding: 0;
       margin: 0;
       text-align: left;
+      border: none; /* Removendo a borda */
     }
 
     li {
@@ -91,12 +99,12 @@
 </head>
 <body>
   <div>
-    <h2>Minhas Tarefas</h2>
+    <h2>Listas</h2>
     <form onsubmit="return adicionarItem()">
       <input type="text" id="valor" name="valor" placeholder="Digite" onkeydown="if(event.key==='Enter') return adicionarItem()">
       <div class="botoes">
-        <button class="adicionar" onclick="return adicionarItem()">+</button>
-        <!--<button class="concluir" onclick="return adicionarItem()">></button>-->
+        <button class="adicionar" onclick="adicionarItem()">+</button>
+        <!--<button class="concluir" onclick="return adicionarItem()">✓</button>-->
         <button class="limpar" onclick="limpar()">×</button>
       </div>
     </form>
@@ -111,12 +119,13 @@
       var valorInput = document.getElementById("valor").value;
       if (valorInput.trim() !== "") { // Verifica se o valor não está vazio ou apenas contém espaços em branco
         var lista = document.getElementById("lista");
+
         var novoItem = document.createElement("li");
         novoItem.id = "item" + contador;
 
         var concluirButton = document.createElement("button");
         concluirButton.className = "concluir";
-        concluirButton.innerHTML = ">"; // Usando o caractere unicode >
+        concluirButton.innerHTML = "✓"; // Usando o caractere unicode ✓
         concluirButton.onclick = function() {
           concluirItem(novoItem.id);
         };
