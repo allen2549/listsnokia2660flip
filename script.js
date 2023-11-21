@@ -56,12 +56,19 @@ function adicionarItem() {
 
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function() {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                var resposta = JSON.parse(xhr.responseText);
-                if (resposta.status === "success") {
-                    console.log(resposta.mensagem);
+            if (xhr.readyState == 4) {
+                console.log("Status da requisição:", xhr.status);
+                console.log("Resposta do servidor:", xhr.responseText);
+
+                if (xhr.status == 200) {
+                    var resposta = JSON.parse(xhr.responseText);
+                    if (resposta.status === "success") {
+                        console.log(resposta.mensagem);
+                    } else {
+                        console.error(resposta.mensagem);
+                    }
                 } else {
-                    console.error(resposta.mensagem);
+                    console.error("Erro na requisição ao servidor.");
                 }
             }
         };
@@ -77,14 +84,4 @@ function adicionarItem() {
     return false;
 }
 
-function concluirItem(descricao) {
-    // Lógica para concluir uma tarefa (a ser implementada)
-}
-
-function excluirItem(descricao) {
-    // Lógica para excluir uma tarefa (a ser implementada)
-}
-
-function limpar() {
-    // Lógica para limpar a lista (a ser implementada)
-}
+// Restante do código (concluirItem, excluirItem, limpar) sem alterações
