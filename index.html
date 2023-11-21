@@ -4,7 +4,8 @@
   <title>Lista de Tarefas</title>
   <style>
     body {
-      font-size: 14px; /* Reduzi o tamanho da fonte para melhorar a legibilidade em telas menores */
+      font-family: 'Calibri', sans-serif; /* Definindo a fonte Calibri */
+      font-size: 16px;
       margin: 0;
       padding: 0;
       display: flex;
@@ -13,43 +14,41 @@
       align-items: center;
       height: 100vh;
       text-align: center;
-      background-color: #fff; /* Cor de fundo no modo claro */
-      color: #333; /* Cor do texto no modo claro */
-      transition: background-color 0.5s, color 0.5s; /* Adicionada transição suave */
+      background-color: #333; /* Cor de fundo no modo escuro */
+      color: #fff; /* Cor do texto no modo escuro */
+    }
+
+    body.dark-mode {
+      background-color: #333; /* Cor de fundo no modo escuro */
+      color: #fff; /* Cor do texto no modo escuro */
     }
 
     form {
-      margin: 5px; /* Reduzi a margem para melhorar o aproveitamento do espaço */
+      margin: 10px;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
     input[type="text"] {
-      width: 80%; /* Aumentei a largura do campo de texto para melhorar a usabilidade em telas menores */
+      width: 50%;
       box-sizing: border-box;
-      margin-bottom: 5px; /* Reduzi a margem inferior */
+      margin-bottom: 10px;
       padding: 5px;
-      font-size: 14px;
+      font-size: 16px;
     }
 
-    input[type="image"].adicionar,
-    input[type="image"].limpar,
-    input[type="image"].toggle-dark-mode,
-    button.concluir {
-      width: 16px;
-      height: 16px;
+    button {
+      width: 40px; /* Aumentei o tamanho dos botões */
+      height: 40px; /* Aumentei o tamanho dos botões */
       margin: 0 5px;
       padding: 0;
       background: none;
-      border: none;
+      border: none; /* Removendo a borda */
       cursor: pointer;
-    }
-
-    img.logo {
-      width: 16px;
-      height: 16px;
-      margin-bottom: 5px; /* Reduzi a margem inferior */
+      color: #fff; /* Fonte em branco */
+      font-weight: bold; /* Negrito */
+      font-size: 18px; /* Aumentei o tamanho da fonte */
     }
 
     ul {
@@ -61,7 +60,7 @@
 
     li {
       margin-bottom: 5px;
-      font-size: 14px; /* Reduzi o tamanho da fonte para melhorar a legibilidade em telas menores */
+      font-size: 16px;
       display: flex;
       align-items: center;
       border: 1px solid #ccc;
@@ -71,24 +70,32 @@
 
     .botoes {
       display: flex;
-      margin-top: 5px; /* Reduzi a margem superior */
+      margin-top: 10px;
     }
 
     .botoes button {
       margin-right: 5px;
     }
+
+    @media screen and (max-width: 240px) {
+      input[type="text"] {
+        font-size: 14px;
+      }
+      li, button {
+        font-size: 14px;
+      }
+    }
   </style>
 </head>
 <body>
   <div>
-    <img class="logo" src="https://cdn-icons-png.flaticon.com/512/9717/9717679.png" alt="Logo">
-
+    <h2>Minhas Tarefas</h2>
     <form onsubmit="return adicionarItem()">
       <input type="text" id="valor" name="valor" placeholder="Digite" onkeydown="if(event.key==='Enter') return adicionarItem()">
       <div class="botoes">
-        <input type="image" class="adicionar" src="https://cdn-icons-png.flaticon.com/512/738/738882.png" alt="Adicionar">
-        <input type="image" class="limpar" src="https://cdn-icons-png.flaticon.com/512/505/505445.png" alt="Limpar">
-        <input type="image" class="toggle-dark-mode" src="https://cdn-icons-png.flaticon.com/512/1207/1207558.png" alt="Toggle Dark Mode" onclick="toggleDarkMode()">
+        <button class="adicionar" onclick="return adicionarItem()">+</button>
+        <!--<button class="concluir" onclick="return adicionarItem()">✓</button>-->
+        <button class="limpar" onclick="limpar()">×</button>
       </div>
     </form>
 
@@ -100,23 +107,17 @@
 
     function adicionarItem() {
       var valorInput = document.getElementById("valor").value;
-      if (valorInput) {
+      if (valorInput.trim() !== "") { // Verifica se o valor não está vazio ou apenas contém espaços em branco
         var lista = document.getElementById("lista");
         var novoItem = document.createElement("li");
         novoItem.id = "item" + contador;
 
         var concluirButton = document.createElement("button");
         concluirButton.className = "concluir";
+        concluirButton.innerHTML = "✓"; // Usando o caractere unicode ✓
         concluirButton.onclick = function() {
           concluirItem(novoItem.id);
         };
-
-        var imgConcluir = document.createElement("img");
-        imgConcluir.src = "https://cdn-icons-png.flaticon.com/512/4646/4646135.png";
-        imgConcluir.alt = "Concluir";
-        imgConcluir.width = 16;
-        imgConcluir.height = 16;
-        concluirButton.appendChild(imgConcluir);
 
         novoItem.appendChild(concluirButton);
 
@@ -129,7 +130,7 @@
 
         return false;
       }
-      return true;
+      return false; // Evita a submissão do formulário se o campo estiver vazio
     }
 
     function concluirItem(id) {
@@ -139,11 +140,6 @@
 
     function limpar() {
       location.reload();
-    }
-
-    // Adicionado script para alternar entre os modos claro e escuro
-    function toggleDarkMode() {
-      document.body.classList.toggle('dark-mode');
     }
   </script>
 </body>
