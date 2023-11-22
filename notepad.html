@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=240, height=320, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>Meu Bloco de Notas</title>
+    <center>
+	<style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 5px;
+            background-color: black;
+            color: white;
+        }
+
+        #note-input {
+			width: 90%;
+            height: 90px;
+            margin-bottom: 5px;
+            border-radius: 10px;
+            border: 1px solid #555; /* Cinza escuro para a borda */
+            background-color: #333; /* Cinza escuro para o fundo */
+            color: white;
+            padding: 5px;
+        }
+
+        #note-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .note {
+            border: 1px solid white;
+            border-radius: 10px;
+            padding: 5px;
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: black;
+            color: white;
+        }
+
+        .delete-btn {
+            background-color: #555; /* Cinza escuro para o fundo do botão */
+            color: white;
+            border: none;
+            padding: 2px 5px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #555; /* Cinza escuro para o fundo dos botões */
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-right: 5px;
+        }
+    </style>
+	</center>
+</head>
+<body>
+
+    <center><h3>Notas</h3></center>
+
+    <center>
+	<textarea id="note-input" placeholder="Digite sua anotação aqui"></textarea>
+    </center>
+	<br>
+    <center>
+	<button onclick="addNote()">Adicionar</button>
+    <button onclick="exportToTxt()">Exportar para TXT</button>
+	</center>
+
+    <ul id="note-list"></ul>
+
+    <script>
+        // Carregar as notas salvas localmente ao iniciar a página
+        window.onload = function() {
+            loadNotes();
+        };
+
+        function addNote() {
+            var noteText = document.getElementById('note-input').value;
+
+            if (noteText.trim() !== '') {
+                var noteList = document.getElementById('note-list');
+
+                var li = document.createElement('li');
+                li.className = 'note';
+
+                var noteContent = document.createElement('div');
+                noteContent.innerHTML = noteText;
+
+                var deleteBtn = document.createElement('button');
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.innerHTML = 'X';
+                deleteBtn.onclick = function () {
+                    li.remove();
+                    saveNotesLocally();
+                };
+
+                li.appendChild(noteContent);
+                li.appendChild(deleteBtn);
+
+                noteList.appendChild(li);
+
+                // Limpar o campo de entrada após adicionar uma nota
+                document.getElementById('note-input').value = '';
+
+                // Salvar localmente após adicionar uma nota
+                saveNotesLocally();
+            }
+        }
+
+        function saveNotesLocally() {
+            var noteList = document.getElementById('note-list');
+            var notes = [];
+
+            // Obter todas as notas e armazenar em um array
+            for (var i = 0; i < noteList.children.length; i++) {
+                var note = noteList.children[i].querySelector('div').innerText;
+                notes.push(note);
+            }
+
+            // Converter o array para uma string JSON e salvar no armazenamento local
+            localStorage.setItem('notes', JSON.stringify(notes));
+        }
+
+        function loadNotes() {
+            var noteList = document.getElementById('note-list');
+            var notes = localStorage.getItem('notes');
+
+            // Verificar se há notas salvas localmente
+            if (notes) {
+                // Converter a string JSON de volta para um array
+                notes = JSON.parse(notes);
+
+                // Adicionar as notas à lista
+                notes.forEach(function (note) {
+                    var li = document.createElement('li');
+                    li.className = 'note';
+
+                    var noteContent = document.createElement('div');
+                    noteContent.innerHTML = note;
+
+                    var deleteBtn = document.createElement('button');
+                    deleteBtn.className = 'delete-btn';
+                    deleteBtn.innerHTML = 'X';
+                    deleteBtn.onclick = function () {
+                        li.remove();
+                        saveNotesLocally();
+                    };
+
+                    li.appendChild(noteContent);
+                    li.appendChild(deleteBtn);
+
+                    noteList.appendChild(li);
+                });
+            }
+        }
+
+        function exportToTxt() {
+            var noteList = document.getElementById('note-list');
+            var notesText = '';
+
+            // Obter todas as notas e armazenar em uma string
+            for (var i = 0; i < noteList.children.length; i++) {
+                notesText += noteList.children[i].querySelector('div').innerText + '\n';
+            }
+
+            // Criar um objeto Blob e criar um link de download
+            var blob = new Blob([notesText], { type: 'text/plain' });
+            var a = document.createElement('a');
+            a.href = window.URL.createObjectURL(blob);
+            a.download = 'notas.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    </script>
+
+</body>
+</html>

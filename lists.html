@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarefas e Listas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: black;
+        }
+
+        .container {
+            width: 240px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 10px;
+            box-sizing: border-box;
+            border-radius: 10px; /* Borda arredondada */
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .input-container {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        input {
+            flex: 1;
+            padding: 5px;
+            box-sizing: border-box;
+            border-radius: 5px; /* Borda arredondada */
+        }
+
+        button {
+            padding: 5px;
+            background-color: gray;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px; /* Borda arredondada */
+            margin: 3px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            padding: 5px;
+            background-color: #ddd;
+            border-radius: 5px; /* Borda arredondada */
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .delete-icon {
+            color: black;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <center><i class="fas fa-list-ul fa-2x"></i><br></center>
+        <div class="input-container">
+            <input type="text" id="newTask" placeholder="">
+            <div></div>
+            <button id="addTaskButton"><i class="fas fa-plus"></i></button>
+        </div>
+        <ul id="taskList">
+            <!-- Lista de tarefas vai aqui -->
+        </ul>
+    </div>
+    <script src="script.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("addTaskButton").addEventListener("click", function () {
+                addTask();
+            });
+
+            loadTasks();
+
+            window.addEventListener("beforeunload", function () {
+                saveTasks();
+            });
+        });
+
+        function addTask() {
+            var newTaskText = document.getElementById("newTask").value;
+
+            if (newTaskText.trim() !== "") {
+                var ul = document.getElementById("taskList");
+                var li = document.createElement("li");
+                var checkboxContainer = document.createElement("div");
+                checkboxContainer.className = "checkbox-container";
+                li.appendChild(checkboxContainer);
+                var checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+                checkboxContainer.appendChild(checkbox);
+                var taskText = document.createElement("span");
+                taskText.textContent = newTaskText;
+                taskText.style.display = "inline-block";
+                taskText.style.margin = "0 auto";
+                checkboxContainer.appendChild(taskText);
+                var deleteIcon = document.createElement("i");
+                deleteIcon.className = "fas fa-trash delete-icon";
+                deleteIcon.onclick = function () {
+                    ul.removeChild(li);
+                    saveTasks();
+                };
+                li.appendChild(deleteIcon);
+
+                ul.appendChild(li);
+                document.getElementById("newTask").value = "";
+
+                saveTasks();
+            }
+        }
+
+        function saveTasks() {
+            var ul = document.getElementById("taskList");
+            var tasks = [];
+
+            for (var i = 0; i < ul.children.length; i++) {
+                var taskText = ul.children[i].querySelector("span").textContent;
+                var isChecked = ul.children[i].querySelector("input").checked;
+                tasks.push({ text: taskText, checked: isChecked });
+            }
+
+            localStorage.setItem("tasks", JSON.stringify(tasks));
+        }
+
+        function loadTasks() {
+            var ul = document.getElementById("taskList");
+            var tasks = localStorage.getItem("tasks");
+
+            if (tasks) {
+                tasks = JSON.parse(tasks);
+
+                for (var i = 0; i < tasks.length; i++) {
+                    addTaskToList(tasks[i].text, tasks[i].checked);
+                }
+            }
+        }
+
+        function addTaskToList(text, checked) {
+            var ul = document.getElementById("taskList");
+            var li = document.createElement("li");
+            var checkboxContainer = document.createElement("div");
+            checkboxContainer.className = "checkbox-container";
+            li.appendChild(checkboxContainer);
+            var checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.checked = checked;
+            checkboxContainer.appendChild(checkbox);
+            var taskText = document.createElement("span");
+            taskText.textContent = text;
+            taskText.style.display = "inline-block";
+            taskText.style.margin = "0 auto";
+            checkboxContainer.appendChild(taskText);
+            var deleteIcon = document.createElement("i");
+            deleteIcon.className = "fas fa-trash delete-icon";
+            deleteIcon.onclick = function () {
+                ul.removeChild(li);
+                saveTasks();
+            };
+            li.appendChild(deleteIcon);
+            ul.appendChild(li);
+        }
+    </script>
+</body>
+</html>
