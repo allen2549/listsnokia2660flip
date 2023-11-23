@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lists</title>
+    <title>Tarefas e Listas</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -86,10 +86,10 @@
 </head>
 <body>
     <div class="container">
-        <center><h4>Listas</h4></center>
+        <h1>Tarefas</h1>
         <div class="input-container">
-            <input type="text" id="newTask" placeholder="">
-            <button id="addTaskButton">+</button>
+            <input type="text" id="newTask" placeholder="Nova tarefa">
+            <button id="addTaskButton" onclick="addTask()">+</button>
         </div>
         <ul id="taskList">
             <!-- Lista de tarefas vai aqui -->
@@ -98,10 +98,6 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            document.getElementById("addTaskButton").addEventListener("click", function () {
-                addTask();
-            });
-
             loadTasks();
         });
 
@@ -171,7 +167,7 @@
                 <div class="checkbox-container">
                     <span class="task-text" style="${completed ? 'text-decoration: line-through;' : ''}">${text}</span>
                     <span class="icon icon-check" onclick="completeTask(this)">✓</span>
-                    <span class="icon icon-delete" onclick="deleteTask(this)">✕</span>
+                    <span class="icon icon-delete" onclick="deleteTask(this)">✗</span>
                 </div>
             `;
             ul.appendChild(li);
