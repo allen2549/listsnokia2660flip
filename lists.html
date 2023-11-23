@@ -3,25 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tarefas e Listas</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
-
+    <title>Lists</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             background-color: black;
+            color: white;
         }
 
         .container {
-            width: 240px;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 10px;
+            width: 100%;
             box-sizing: border-box;
-            border-radius: 10px; /* Borda arredondada */
+            border-radius: 10px;
+            padding: 10px;
+            background-color: #333;
         }
 
         h1 {
@@ -37,7 +34,7 @@
             flex: 1;
             padding: 5px;
             box-sizing: border-box;
-            border-radius: 5px; /* Borda arredondada */
+            border-radius: 5px;
         }
 
         button {
@@ -46,7 +43,7 @@
             color: white;
             border: none;
             cursor: pointer;
-            border-radius: 5px; /* Borda arredondada */
+            border-radius: 5px;
             margin: 3px;
         }
 
@@ -62,8 +59,8 @@
             justify-content: space-between;
             margin-bottom: 5px;
             padding: 5px;
-            background-color: #ddd;
-            border-radius: 5px; /* Borda arredondada */
+            background-color: #555;
+            border-radius: 5px;
         }
 
         .checkbox-container {
@@ -71,25 +68,33 @@
             align-items: center;
         }
 
-        .delete-icon {
-            color: black;
+        .task-text {
+            flex: 1;
+            margin-left: 10px;
+        }
+
+        .icon {
             cursor: pointer;
+            font-size: 18px;
+            margin-left: 5px;
+        }
+
+        .icon-delete {
+            color: #ff5050;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <center><i class="fas fa-list-ul fa-2x"></i><br></center>
+        <center><h4>Listas</h4></center>
         <div class="input-container">
             <input type="text" id="newTask" placeholder="">
-            <div></div>
-            <button id="addTaskButton"><i class="fas fa-plus"></i></button>
+            <button id="addTaskButton">+</button>
         </div>
         <ul id="taskList">
             <!-- Lista de tarefas vai aqui -->
         </ul>
     </div>
-    <script src="script.js"></script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -98,10 +103,6 @@
             });
 
             loadTasks();
-
-            window.addEventListener("beforeunload", function () {
-                saveTasks();
-            });
         });
 
         function addTask() {
@@ -110,25 +111,13 @@
             if (newTaskText.trim() !== "") {
                 var ul = document.getElementById("taskList");
                 var li = document.createElement("li");
-                var checkboxContainer = document.createElement("div");
-                checkboxContainer.className = "checkbox-container";
-                li.appendChild(checkboxContainer);
-                var checkbox = document.createElement("input");
-                checkbox.type = "checkbox";
-                checkboxContainer.appendChild(checkbox);
-                var taskText = document.createElement("span");
-                taskText.textContent = newTaskText;
-                taskText.style.display = "inline-block";
-                taskText.style.margin = "0 auto";
-                checkboxContainer.appendChild(taskText);
-                var deleteIcon = document.createElement("i");
-                deleteIcon.className = "fas fa-trash delete-icon";
-                deleteIcon.onclick = function () {
-                    ul.removeChild(li);
-                    saveTasks();
-                };
-                li.appendChild(deleteIcon);
-
+                li.innerHTML = `
+                    <div class="checkbox-container">
+                        <span class="task-text">${newTaskText}</span>
+                        <span class="icon icon-check" onclick="completeTask(this)">✓</span>
+                        <span class="icon icon-delete" onclick="deleteTask(this)">✗</span>
+                    </div>
+                `;
                 ul.appendChild(li);
                 document.getElementById("newTask").value = "";
 
@@ -136,14 +125,27 @@
             }
         }
 
+        function completeTask(element) {
+            var taskText = element.parentNode.querySelector(".task-text");
+            taskText.style.textDecoration = "line-through";
+            saveTasks();
+        }
+
+        function deleteTask(element) {
+            var li = element.parentNode.parentNode;
+            var ul = document.getElementById("taskList");
+            ul.removeChild(li);
+            saveTasks();
+        }
+
         function saveTasks() {
             var ul = document.getElementById("taskList");
             var tasks = [];
 
             for (var i = 0; i < ul.children.length; i++) {
-                var taskText = ul.children[i].querySelector("span").textContent;
-                var isChecked = ul.children[i].querySelector("input").checked;
-                tasks.push({ text: taskText, checked: isChecked });
+                var taskText = ul.children[i].querySelector(".task-text").textContent;
+                var isCompleted = ul.children[i].querySelector(".task-text").style.textDecoration === "line-through";
+                tasks.push({ text: taskText, completed: isCompleted });
             }
 
             localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -157,33 +159,21 @@
                 tasks = JSON.parse(tasks);
 
                 for (var i = 0; i < tasks.length; i++) {
-                    addTaskToList(tasks[i].text, tasks[i].checked);
+                    addTaskToList(tasks[i].text, tasks[i].completed);
                 }
             }
         }
 
-        function addTaskToList(text, checked) {
+        function addTaskToList(text, completed) {
             var ul = document.getElementById("taskList");
             var li = document.createElement("li");
-            var checkboxContainer = document.createElement("div");
-            checkboxContainer.className = "checkbox-container";
-            li.appendChild(checkboxContainer);
-            var checkbox = document.createElement("input");
-            checkbox.type = "checkbox";
-            checkbox.checked = checked;
-            checkboxContainer.appendChild(checkbox);
-            var taskText = document.createElement("span");
-            taskText.textContent = text;
-            taskText.style.display = "inline-block";
-            taskText.style.margin = "0 auto";
-            checkboxContainer.appendChild(taskText);
-            var deleteIcon = document.createElement("i");
-            deleteIcon.className = "fas fa-trash delete-icon";
-            deleteIcon.onclick = function () {
-                ul.removeChild(li);
-                saveTasks();
-            };
-            li.appendChild(deleteIcon);
+            li.innerHTML = `
+                <div class="checkbox-container">
+                    <span class="task-text" style="${completed ? 'text-decoration: line-through;' : ''}">${text}</span>
+                    <span class="icon icon-check" onclick="completeTask(this)">✓</span>
+                    <span class="icon icon-delete" onclick="deleteTask(this)">✕</span>
+                </div>
+            `;
             ul.appendChild(li);
         }
     </script>
